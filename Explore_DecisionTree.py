@@ -2,12 +2,13 @@
 import graphviz
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn import tree
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
-
+from sklearn.tree import DecisionTreeClassifier, plot_tree
 
 data = load_iris()
 print(data.target_names)
@@ -16,7 +17,6 @@ xtrain, xtest, ytrain, ytest = train_test_split(data.data, data.target, test_siz
 print(xtrain.shape)
 print(ytrain.shape)
 
-#---------------------开始选择参数
 name = ['gini', 'entropy']
 for i in name:
     clf = tree.DecisionTreeClassifier(criterion=i, random_state=1)
@@ -36,7 +36,6 @@ graph.render()
 
 
 
-import matplotlib.pyplot as plt
 
 test = []
 for i in range(10):
@@ -54,13 +53,6 @@ plt.plot(range(1, 11), test, color="red", label="max_depth")
 plt.legend()
 plt.show()
 print(test.index(max(test)), max(test))
-
-
-
-test.index(max(test))
-
-
-
 print(clf.predict(xtest))
 print(ytest)
 print(ytest == clf.predict(xtest))  # 只预测错了2个结果
@@ -70,9 +62,7 @@ print(ytest == clf.predict(xtest))  # 只预测错了2个结果
 
 
 classifier = tree.DecisionTreeClassifier(max_depth=5, random_state=1)
-cross_val_score(classifier, xtrain, ytrain, cv=10).mean()
-
-
+print(cross_val_score(classifier, xtrain, ytrain, cv=10).mean())
 
 train = []
 test = []
@@ -95,8 +85,6 @@ plt.legend()
 plt.show()
 print(test.index(max(test)) + 1, max(test))
 
-
-
 clf = tree.DecisionTreeClassifier(max_depth=5
                                   , criterion="entropy"
                                   , random_state=1
@@ -106,8 +94,6 @@ clf = tree.DecisionTreeClassifier(max_depth=5
 
 ypredict = clf.fit(xtrain, ytrain).predict(xtest)
 print(ypredict == ytest) # 现在只错了一个
-
-
 
 # 为了进一步探索有没有更好的参数，现在使用网格搜索
 from sklearn.model_selection import GridSearchCV
@@ -121,10 +107,6 @@ GS = GridSearchCV(tree.DecisionTreeClassifier(), parameters, cv=10)
 GS.fit(xtrain, ytrain)
 print(GS.best_params_)
 print(GS.best_score_)  # 发现结果并没有之前的好，所以不添加参数min_samples_split搜索更为合适
-
-
-
-from sklearn.tree import DecisionTreeClassifier, plot_tree
 
 # Parameters
 n_classes = 3
@@ -173,26 +155,18 @@ plot_tree(clf, filled=True)
 plt.show()
 
 
-
+#using seaborn to draw Pair analysis chart,just for fun,not an important part
 data = pd.concat([pd.DataFrame(data.data, columns=data.feature_names), pd.DataFrame(data.target, columns=['Species'])],
                  axis=1)
 print(data.head())
-
-
-
 species_name = load_iris()
 data.Species = data.Species.astype('str')
-
-
-
 species_map = {
     '0': 'setosa',
     '1': 'versicolor',
     '2': 'verginica',
 }
 data.Species = data.Species.map(species_map)
-
-
 sns.pairplot(data,
              kind='scatter',
              hue='Species',
