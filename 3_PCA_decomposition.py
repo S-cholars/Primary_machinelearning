@@ -16,7 +16,6 @@ print(X.shape)
 fig,axes=plt.subplots(5,5,subplot_kw=dict(xticks=[],yticks=[]))
 for i,ax in enumerate(axes.flat):
     ax.imshow(faces.images[i,:,:],cmap='binary_r')
-plt.tight_layout()
 plt.show()
 
 #接下来使用PCA降维
@@ -28,5 +27,27 @@ fig,axes=plt.subplots(5,5,subplot_kw=dict(xticks=[],yticks=[]))
 for i,ax in enumerate(axes.flat):
     ax.imshow(v[i,:].reshape(62,47),cmap='binary_r')
     # ax.imshow(v.reshape(62, 47)[i,:,:], cmap='binary_r'),注意不能写成这样，取索引必须在前，然后才能reshape
-plt.tight_layout()
 plt.show()
+
+#实例化
+pca = PCA(150)
+#拟合+提取结果
+X_dr = pca.fit_transform(X)  
+X_inverse = pca.inverse_transform(X_dr)
+print(X_inverse.shape#)
+fig,axes=plt.subplots(2,10,subplot_kw=dict(xticks=[],yticks=[]))
+for i in range(10):
+      ax[0,i].imshow(faces.images[i,:,:],cmap='gray')
+      ax[1,i].imshow(X_inverse[i].reshape(62,47),cmap='gray')
+ plt.show()
+
+
+
+
+
+
+
+
+
+
+
