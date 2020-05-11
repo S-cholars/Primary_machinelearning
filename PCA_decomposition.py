@@ -1,14 +1,14 @@
 #encoding=utf-8
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.datasets import fetch_lfw_people#7个人的1000多张人脸图片组成的一组人脸数据
+from sklearn.datasets import fetch_lfw_people
 from sklearn.decomposition import PCA
 
-faces = fetch_lfw_people(min_faces_per_person=60)#实例化   min_faces_per_person=60：每个人取出60张脸图
-print(faces)#一个字典形式的数据
+faces = fetch_lfw_people(min_faces_per_person=60)#实例化   min_faces_per_person=60：每个人取出60张
+print(faces)#字典形式
 
-print(faces.images.shape)#第一个是矩阵中图像的个数，62是每个图像的特征矩阵的行，47是每个图像的特征矩阵的列
-print(faces.data.shape)#行是样本，列是样本相关的所有特征：2914 = 62 * 47
+print(faces.images.shape)  #第一个是矩阵中图像的个数，62是每个图像的特征矩阵的行，47是每个图像的特征矩阵的列
+print(faces.data.shape)  #行是样本，列是样本相关的所有特征：2914 = 62 * 47
 
 X = faces.data
 print(X.shape)
